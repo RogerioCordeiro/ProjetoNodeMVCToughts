@@ -1,12 +1,14 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const session = require('express-session')
-const FileStore = require('session-file-store')
+const FileStore = require('session-file-store')(session)
 const flash = require('express-flash')
 const app = express()
 const conn = require('./db/conn')
 const Tougth = require('./models/Toughts')
 const User = require('./models/User')
+const toughtsRoutes = require('./routes/toughtsRoutes')
+const ToughtController = require('./controllers/ToughtController')
 
 app.engine('handlebars', exphbs.engine())
 app.set('view engine', 'handlebars')
@@ -15,7 +17,7 @@ app.use(
         extended: true
     })
 )
-app.use(express.json)
+app.use(express.json())
 app.use(
     session({
         name: "session",
@@ -38,11 +40,13 @@ app.use(flash())
 app.use(express.static('public'))
 app.use((req, res, next) => {
     if (req.session.userid) {
-        res.locals.session = resq.session
+        res.locals.session = res.session
     }
 
     next()
 })
+app.use('/toughts', toughtsRoutes)
+app.get('/', ToughtController.showToughts)
 conn
     .sync()
     .then(() => {
