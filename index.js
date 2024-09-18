@@ -5,6 +5,8 @@ const FileStore = require('session-file-store')
 const flash = require('express-flash')
 const app = express()
 const conn = require('./db/conn')
+const Tougth = require('./models/Toughts')
+const User = require('./models/User')
 
 app.engine('handlebars', exphbs.engine())
 app.set('view engine', 'handlebars')
