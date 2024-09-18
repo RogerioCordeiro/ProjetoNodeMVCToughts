@@ -50,7 +50,7 @@ app.use('/toughts', toughtsRoutes)
 app.use('/', authRoutes)
 app.get('/', ToughtController.showToughts)
 conn
-    .sync()
+    .sync() //{ force: true }
     .then(() => {
         app.listen(3000)
     })
