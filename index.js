@@ -9,6 +9,8 @@ const Tougth = require('./models/Toughts')
 const User = require('./models/User')
 const toughtsRoutes = require('./routes/toughtsRoutes')
 const ToughtController = require('./controllers/ToughtController')
+const AuthController = require('./controllers/AuthController')
+const authRoutes = require('./routes/authRoutes')
 
 app.engine('handlebars', exphbs.engine())
 app.set('view engine', 'handlebars')
@@ -42,10 +44,10 @@ app.use((req, res, next) => {
     if (req.session.userid) {
         res.locals.session = res.session
     }
-
     next()
 })
 app.use('/toughts', toughtsRoutes)
+app.use('/', authRoutes)
 app.get('/', ToughtController.showToughts)
 conn
     .sync()
